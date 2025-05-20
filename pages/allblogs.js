@@ -7,13 +7,20 @@ import { useRouter } from 'next/router';
 const AllBlogs = () => {
     const router = useRouter();
     const [tasks, setTasks] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+
     const getAllData = async () => {
+        if (loading) {
+            document.querySelector(".loader").style.display = "flex";
+        }
         try {
             const res = await axios.get("/api/getall");
             setTasks(res.data.filterData);
         } catch (err) {
             alert(err);
         }
+        document.querySelector(".loader").style.display = "none";
     };
 
     useEffect(() => {
@@ -26,6 +33,16 @@ const AllBlogs = () => {
                 <div className='m-5 flex justify-center items-center gap-10'>
                     <Button variant='contained' onClick={() => router.push("/login")}>Login</Button>
                     <Button variant='contained' onClick={() => router.push("/register")}>Register</Button>
+                </div>
+            </div>
+            <div className='hidden loader justify-center items-center m-20'>
+                <div className="wrapper">
+                    <div className="circle"></div>
+                    <div className="circle"></div>
+                    <div className="circle"></div>
+                    <div className="shadow"></div>
+                    <div className="shadow"></div>
+                    <div className="shadow"></div>
                 </div>
             </div>
             <div>
